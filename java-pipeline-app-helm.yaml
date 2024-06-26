@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: push-java-image-pipeline
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  destination:
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: "https://piotrowczarc.github.io/helm-charts/"
+      chart: cicd
+      targetRevision: 0.3.0
+      helm:
+        valueFiles:
+          - $values/helm/pipeline-values.yaml
+    - repoURL: https://github.com/thepierrre/demo-springboot-app
+      targetRevision: HEAD
+      ref: values
+  project: default

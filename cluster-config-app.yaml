@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-config
+  namespace: openshift-gitops
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/thepierrre/ocp-cluster-config
+    path: ./
+    targetRevision: HEAD
+  project: default
